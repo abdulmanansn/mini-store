@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mini Online Store</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>My Online Store</h1>
+
+    <div class="product">
+        <h2>Laptop</h2>
+        <p>Price: $500</p>
+        <button onclick="addToCart()">Add to Cart</button>
+    </div>
+
+    <h3 id="cart">Cart: 0 items</h3>
+
+    <h2>Customer Registration</h2>
+
+    <form id="customerForm">
+        <input id="name" placeholder="Your Name" required>
+        <input id="email" type="email" placeholder="Your Email" required>
+        <button type="submit">Register</button>
+    </form>
+
+    <p id="message"></p>
+
+    <script>
+        let count = 0;
+
+        function addToCart() {
+            count++;
+            document.getElementById("cart").innerText =
+                "Cart: " + count + " items";
+        }
+
+        document.getElementById("customerForm")
+            .addEventListener("submit", async function(event) {
+                event.preventDefault();
+
+                const response = await fetch("/register", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        name: document.getElementById("name").value,
+                        email: document.getElementById("email").value
+                    })
+                });
+
+                const result = await response.json();
+                document.getElementById("message").innerText =
+                    result.message;
+            });
+    </script>
+
+</body>
+</html>
